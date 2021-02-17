@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(SupplierDeployment VERSION 0.1.0)
 
 # Project
-project(ShapEditor VERSION 0.1.0)
+project(SupplierDeployment VERSION 0.1.0)
 set(CMAKE_PROJECT_NAME  ${PROJECT_NAME})
 set(CMAKE_PROJECT_VERSION  ${PROJECT_VERSION})
 
