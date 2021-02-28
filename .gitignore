@@ -1,3 +1,6 @@
 # Build directory
 /bin
 /build
+
+# VSCode settings
+/.vscode
