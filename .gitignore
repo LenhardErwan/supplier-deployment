@@ -1,6 +1,9 @@
 # Build directory
 /bin
+# CMake files for build
 /build
-
-# VSCode settings
+# Visual Studio Code files
 /.vscode
+
+# All executable files
+*.exe
