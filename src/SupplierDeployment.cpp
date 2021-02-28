@@ -1,10 +1,16 @@
-#include <SupplierDeployment.hpp>
+#include "SupplierDeployment.hpp"
 #include <string>
 #include <fstream>
 #include <iostream>
 
-int readFile(std::string file) {
+SupplierDeployment::SupplierDeployment()
+{ }
 
+SupplierDeployment::~SupplierDeployment()
+{ }
+
+void SupplierDeployment::readFile(std::string file)
+{
 	//defining the ifstream
 	std::ifstream inFile;
 
@@ -30,6 +36,19 @@ int readFile(std::string file) {
     //     inFile >> number;
     //     std::cout << number << std::endl;
     // }
-    
-    return 0;
 }
+
+void SupplierDeployment::writeFile()
+{ }
+
+void SupplierDeployment::greedy()
+{ }
+
+void SupplierDeployment::greedyLocalSearch()
+{ }
+
+void SupplierDeployment::linear()
+{ }
+
+void SupplierDeployment::linearRandom()
+{ }
