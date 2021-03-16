@@ -12,7 +12,7 @@ void Supplier::addConnectionPrice(int connectionPrice)
     this->connectionPrices.push_back(connectionPrice);
 }
 
-int Supplier::sumConnectionPrices()
+int Supplier::sumConnectionPrices() const
 {
     int sum = 0;
     

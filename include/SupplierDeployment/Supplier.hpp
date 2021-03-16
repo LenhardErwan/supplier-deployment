@@ -17,13 +17,20 @@ class Supplier {
         ~Supplier();
 
         inline void setId(unsigned int id) { this->id = id; }
-        inline unsigned int getId() { return this->id; }
+        inline unsigned int getId() const { return this->id; }
 
         inline void setOpeningPrice(int openingPrice) { this->openingPrice = openingPrice; }
-        inline int getOpeningPrice() { return this->openingPrice; }
+        inline int getOpeningPrice() const { return this->openingPrice; }
 
         void addConnectionPrice(int connectionPrice);
-        int sumConnectionPrices();
+        int sumConnectionPrices() const;
+
+        friend bool operator<(const Supplier& l, const Supplier& r) {
+            return (l.getOpeningPrice() + l.sumConnectionPrices()) < (r.getOpeningPrice() + r.sumConnectionPrices());
+        }
+        friend bool operator>(const Supplier& l, const Supplier& r) { return r < l; }
+        friend bool operator<=(const Supplier& l, const Supplier& r) { return !(l > r); }
+        friend bool operator>=(const Supplier& l, const Supplier& r) { return !(l < r); }
 };
 
 #endif
