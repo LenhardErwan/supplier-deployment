@@ -1,9 +1,18 @@
 # Build directory
 /bin
+
 # CMake files for build
 /build
+/CMakeFiles
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+
 # Visual Studio Code files
 /.vscode
 
 # All executable files
 *.exe
+
+# Test output file
+output.txt
