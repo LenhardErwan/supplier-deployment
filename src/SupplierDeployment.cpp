@@ -27,7 +27,7 @@ void SupplierDeployment::readFile(std::string file) {
 	inFile >> this->nbClients;
 	inFile >> number;
 
-	while(inFile.good()) {
+	while(inFile.good() && (this->suppliers.size() < this->nbSuppliers)) {
 		unsigned int id;
 		unsigned int openingPrice;
 		unsigned int connectionPrice;
@@ -42,11 +42,13 @@ void SupplierDeployment::readFile(std::string file) {
 
 			s.addConnectionPrice(connectionPrice);
 		}
+
 		
 		this->suppliers.push_back(s);
 	}
 
-	std::cout << this->nbSuppliers << " suppliers and " << this->nbClients << " clients." << std::endl;
+	std::cout << this->suppliers.size() << " suppliers and " << this->nbClients << " clients." << std::endl;
+
 }
 
 void SupplierDeployment::writeFile(std::string file, std::string algorithm) {
