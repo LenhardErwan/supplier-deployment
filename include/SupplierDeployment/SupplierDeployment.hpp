@@ -6,21 +6,21 @@
 #include <vector>
 
 class SupplierDeployment {
-    std::vector<Supplier> suppliers;
-    std::vector<Supplier> openSuppliers;
+	std::vector<Supplier> suppliers;
+	std::vector<Supplier> openSuppliers;
 
-    public:
+	public:
 
-        SupplierDeployment();
-        ~SupplierDeployment();
+		SupplierDeployment();
+		~SupplierDeployment();
 
-        void readFile(std::string file);
-        void writeFile();
+		void readFile(std::string file);
+		void writeFile();
 
-        void greedy();
-        void greedyLocalSearch();
-        void linear();
-        void linearRandom();
+		void greedy();
+		void greedyLocalSearch();
+		void linear();
+		void linearRandom();
 };
 
 #endif

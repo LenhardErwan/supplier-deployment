@@ -1,23 +1,19 @@
 #include "Supplier.hpp"
 
 Supplier::Supplier(unsigned int id, int openingPrice)
-:id(id), openingPrice(openingPrice)
-{ }
+:id(id), openingPrice(openingPrice) { }
 
-Supplier::~Supplier()
-{ }
+Supplier::~Supplier() { }
 
-void Supplier::addConnectionPrice(int connectionPrice)
-{
-    this->connectionPrices.push_back(connectionPrice);
+void Supplier::addConnectionPrice(int connectionPrice) {
+	this->connectionPrices.push_back(connectionPrice);
 }
 
-int Supplier::sumConnectionPrices() const
-{
-    int sum = 0;
-    
-    for(int price : this->connectionPrices)
-        sum += price;
+int Supplier::sumConnectionPrices() const {
+	int sum = 0;
 
-    return sum;
+	for(int price : this->connectionPrices)
+		sum += price;
+
+	return sum;
 }
