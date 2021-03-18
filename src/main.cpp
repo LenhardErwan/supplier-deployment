@@ -11,6 +11,10 @@ int main(int argc, char const *argv[]) {
 		SupplierDeployment test = SupplierDeployment();
 		test.readFile(argv[2]);
 
+		if (argv[1] == "greedy") {
+			test.greedy();
+		}
+
 		test.writeFile(output);
 
 		return 0;

@@ -99,7 +99,39 @@ unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {
 	return total;
 }
 
-void SupplierDeployment::greedy() { }
+void SupplierDeployment::greedy() {
+	std::vector<Supplier> suppliers = this->suppliers;	// Copy suppliers to erase used one
+	this->openSuppliers.clear();						// Reset solution
+
+	bool improve = true; 							// Is the solution improvable
+	int minIndex = 0; 								// Index of the supplier which improve with minimal cost
+	int nextId = suppliers.at(minIndex).getId(); 	// Id of supplier at minIndex
+	int prevId = 0; 								// Id of previous iteration supplier at minIndex
+
+	// If suppliers is not empty and we can improve the solution
+	while (!suppliers.empty() && improve) {
+		// Loop on closed suppliers
+		for (int i = 0; i < suppliers.size(); i++) {
+			std::vector<Supplier> copy = this->openSuppliers;
+			copy.push_back(suppliers.at(i));
+
+			// If the current suppliers improve the solution
+			if (eval(copy) < eval(this->openSuppliers)) {
+				minIndex = i;
+				nextId = suppliers.at(minIndex).getId();
+			}
+		}
+
+		// If no suppliers could improve the solution, stop the algorithm
+		if (nextId == prevId) {
+			improve = false;
+		} else {
+			this->openSuppliers.push_back(suppliers.at(minIndex));
+			prevId = suppliers.at(minIndex).getId();
+			suppliers.erase(suppliers.begin() + minIndex);
+		}
+	}
+}
 
 void SupplierDeployment::greedyLocalSearch() { }
 
