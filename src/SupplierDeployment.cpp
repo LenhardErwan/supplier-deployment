@@ -234,10 +234,9 @@ void SupplierDeployment::linear() {
 	}
 
 	glp_mpl_build_prob(tran, prob);
-	
-	//TODO Here do solve
-
-	ret = glp_mpl_postsolve(tran, prob, GLP_SOL);
+	glp_simplex(prob, NULL);
+	glp_intopt(prob, NULL);
+	ret = glp_mpl_postsolve(tran, prob, GLP_MIP);
 	if(ret != 0) {
 		std::cout << "Error on postsolving model" << std::endl;
 		goto skip;
