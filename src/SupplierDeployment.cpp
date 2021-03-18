@@ -75,7 +75,7 @@ void SupplierDeployment::writeFile(std::string file) {
 	// closing the file
 	outFile.close();
 
-	std::cout << "Your output file has been created at: " << file;
+	std::cout << "Your output file has been created at: " << file << std::endl;
 }
 
 unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {
