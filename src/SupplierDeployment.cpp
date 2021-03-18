@@ -63,10 +63,12 @@ void SupplierDeployment::writeFile(std::string file, std::string algorithm) {
 	outFile << "ALGORITHM: " << algorithm << std::endl;
 	outFile << this->nbSuppliers;
 	outFile << " " << this->nbClients;
-	outFile << " " << this->openSuppliers.size() << std::endl;
+	outFile << " " << this->openSuppliers.size();
+	outFile << " " << this->eval(this->openSuppliers) << std::endl;
 	
 	for(Supplier s : this->openSuppliers) {
 		outFile << s.getId();
+		outFile << " " << s.getOpeningPrice();
 		for(int price : s.getConnectionPrices()) {
 			outFile << " " << price;
 		}
