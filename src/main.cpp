@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
 		SupplierDeployment test = SupplierDeployment();
 		test.readFile(argv[2]);
 
-		test.writeFile();
+		test.writeFile(output);
 
 		return 0;
 	}

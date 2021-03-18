@@ -41,16 +41,41 @@ void SupplierDeployment::readFile(std::string file) {
 
 			s.addConnectionPrice(connectionPrice);
 		}
-
+		
 		this->suppliers.push_back(s);
 	}
 
 	std::cout << this->nbSuppliers << " suppliers and " << this->nbClients << " clients." << std::endl;
 }
 
-void SupplierDeployment::writeFile() {
-	for(Supplier s : this->openSuppliers)
-		std::cout << s.getId() << std::endl;
+void SupplierDeployment::writeFile(std::string file) {
+	//defining the fstream
+	std::fstream outFile;
+
+    //opening the file and preventing errors
+	outFile.open(file,std::ios::out);
+	if (!outFile) {
+		std::cerr << "Error could not write: " << file << std::endl;
+		exit(1);
+	}
+
+	outFile << "FILE: " << file << std::endl;
+	outFile << this->nbSuppliers;
+	outFile << " " << this->nbClients;
+	outFile << " " << this->openSuppliers.size() << std::endl;
+	
+	for(Supplier s : this->openSuppliers) {
+		outFile << s.getId();
+		for(int price : s.getConnectionPrices()) {
+			outFile << " " << price;
+		}
+		outFile << std::endl;
+	}
+
+	// closing the file
+	outFile.close();
+
+	std::cout << "Your output file has been created at: " << file;
 }
 
 unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {

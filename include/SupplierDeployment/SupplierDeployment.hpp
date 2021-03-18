@@ -16,7 +16,7 @@ class SupplierDeployment {
 		~SupplierDeployment();
 
 		void readFile(std::string file);
-		void writeFile();
+		void writeFile(std::string file);
 		
 		unsigned int eval(std::vector<Supplier> openSuppliers);
 
