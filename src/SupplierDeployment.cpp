@@ -48,7 +48,7 @@ void SupplierDeployment::readFile(std::string file) {
 	std::cout << this->nbSuppliers << " suppliers and " << this->nbClients << " clients." << std::endl;
 }
 
-void SupplierDeployment::writeFile(std::string file) {
+void SupplierDeployment::writeFile(std::string file, std::string algorithm) {
 	//defining the fstream
 	std::fstream outFile;
 
@@ -60,6 +60,7 @@ void SupplierDeployment::writeFile(std::string file) {
 	}
 
 	outFile << "FILE: " << file << std::endl;
+	outFile << "ALGORITHM: " << algorithm << std::endl;
 	outFile << this->nbSuppliers;
 	outFile << " " << this->nbClients;
 	outFile << " " << this->openSuppliers.size() << std::endl;

@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
 			test.linearRandom();
 		}
 
-		test.writeFile(output);
+		test.writeFile(output, algorithm);
 
 		return 0;
 	}
