@@ -82,23 +82,28 @@ void SupplierDeployment::writeFile(std::string file, std::string algorithm) {
 }
 
 unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {
-	unsigned int total = 0;
-	std::vector<int> clientMinPrice(this->nbClients, NULL);
+	if (openSuppliers.size() == 0)
+		return 0;
 
-	for (Supplier &supplier : openSuppliers) {
+	unsigned int total = 0;
+	std::vector<int> clientMinPrice = openSuppliers.at(0).getConnectionPrices();
+
+	for (Supplier supplier : openSuppliers) {
 		total += supplier.getOpeningPrice();
-		for (size_t i = 0; i < this->nbClients; i++) {
+		
+		for (int i = 0; i < this->nbClients; i++) {
 			int connectionPrice = supplier.getConnectionPrices().at(i);
 			int actualMinPrice = clientMinPrice.at(i);
-			if(actualMinPrice == NULL || actualMinPrice > connectionPrice) {
+
+			if(actualMinPrice > connectionPrice) {
 				clientMinPrice.at(i) = connectionPrice;
 			}
 		}
 	}
-	for (int &minPrice : clientMinPrice) {
+
+	for (int minPrice : clientMinPrice)
 		total += minPrice;
-	}
-	
+
 	return total;
 }
 
