@@ -79,7 +79,7 @@ void SupplierDeployment::writeFile(std::string file, std::string algorithm) {
 	// closing the file
 	outFile.close();
 
-	std::cout << "Your output file has been created at: " << file << std::endl;
+	std::cout << "Writing file to '" << file << "'..." << std::endl;
 }
 
 unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {
@@ -243,8 +243,12 @@ void SupplierDeployment::linear() {
 		std::cout << "Error on postsolving model" << std::endl;
 		goto skip;
 	}
-	
-	glp_print_mip(prob, "./test.txt");
+
+	for (int i = 0; i < this->suppliers.size(); i++) {
+		if (glp_mip_col_val(prob, (glp_get_num_cols(prob) - i)) == 1) {
+			this->openSuppliers.push_back(this->suppliers.at((50 - 1) - i));
+		}
+	}
 
 	skip: glp_mpl_free_wksp(tran);
 				glp_delete_prob(prob);
