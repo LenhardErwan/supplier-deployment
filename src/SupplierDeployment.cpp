@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "glpk.h"
 
 SupplierDeployment::SupplierDeployment() { }
@@ -213,6 +215,7 @@ void SupplierDeployment::greedyLocalSearch() {
 }
 
 void SupplierDeployment::linear() {
+	this->openSuppliers.clear();
 	this->probToDat("instance.dat");
 	// Create problem
 	glp_prob *prob = glp_create_prob();
@@ -257,12 +260,62 @@ void SupplierDeployment::linear() {
 				return;
 }
 
-void SupplierDeployment::linearRandom() { }
+void SupplierDeployment::linearRandom() {
+	this->openSuppliers.clear();
+	this->probToDat("instance.dat");
+	// Create problem
+	glp_prob *prob = glp_create_prob();
+	glp_tran *tran = glp_mpl_alloc_wksp();
+	int ret = glp_mpl_read_model(tran, "./PLNE.mod", 1);
+	if(ret != 0) {
+		std::cout << "Error on translating model" << std::endl;
+		goto skip;
+	}
+
+	ret = glp_mpl_read_data(tran, "instance.dat");
+	if(ret != 0) {
+		std::cout << "Error on translating data" << std::endl;
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if(ret != 0) {
+		std::cout << "Error on generating model" << std::endl;
+		goto skip;
+	}
+
+	glp_mpl_build_prob(tran, prob);
+	glp_simplex(prob, NULL);
+	ret = glp_mpl_postsolve(tran, prob, GLP_MIP);
+	if(ret != 0) {
+		std::cout << "Error on postsolving model" << std::endl;
+		goto skip;
+	}
+	
+	std::srand(std::time(nullptr));
+	for (size_t i = 0; i < 10; i++) {
+		std::vector<Supplier> tmpSuppliers;
+		for (int j = this->suppliers.size()-1; j >= 0; j--) {
+			double activity = glp_get_col_prim(prob, (glp_get_num_cols(prob) - j));
+			double proba = ((double) std::rand() / (RAND_MAX));
+			if(activity > 0 && activity > proba) {
+				tmpSuppliers.push_back(this->suppliers.at((this->suppliers.size() - 1) - j));
+			}
+		}
+		if(this->openSuppliers.size() == 0 || eval(tmpSuppliers) < eval(openSuppliers)) {
+			this->openSuppliers = tmpSuppliers;
+		}
+	}
+
+	skip: glp_mpl_free_wksp(tran);
+				glp_delete_prob(prob);
+				return;
+}
 
 void SupplierDeployment::probToDat(std::string file) {
 	std::fstream outFile;
 
-    //opening the file and preventing errors
+  //opening the file and preventing errors
 	outFile.open(file, std::ios::out);
 	if (!outFile) {
 		std::cerr << "Error could not write: " << file << std::endl;
