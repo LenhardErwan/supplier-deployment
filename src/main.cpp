@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include "SupplierDeployment.hpp"
 
 int main(int argc, char const *argv[]) {
 	if (argc >= 3) {
@@ -7,7 +8,10 @@ int main(int argc, char const *argv[]) {
 		const std::string input = argv[2];
 		const std::string ouput = (argc >= 4) ? argv[3] : "./output.txt";
 
-		//TODO call functions
+		SupplierDeployment test = SupplierDeployment();
+		test.readFile(argv[2]);
+
+		test.writeFile();
 
 		return 0;
 	}
@@ -20,4 +24,6 @@ int main(int argc, char const *argv[]) {
 		std::cout << "-output (optional): Path (relative or absolute) to the output file" << std::endl;
 		return 1;
 	}
+
+	return 0;
 }

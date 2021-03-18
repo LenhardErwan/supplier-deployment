@@ -17,7 +17,7 @@ void SupplierDeployment::readFile(std::string file)
 	//opening the file and preventing errors
     inFile.open(file);
     if (!inFile) {
-        std::cerr << "Erreur: Impossible d'ouvrir le fichier d'entrée." << std::endl;
+        std::cerr << "Error could not read the specified file!" << std::endl;
         exit(1);
     }
 
@@ -30,16 +30,31 @@ void SupplierDeployment::readFile(std::string file)
     inFile >> nbCustomers;
     inFile >> number;
 
-    std::cout << "Nous avons " << nbSupplier << " fournisseurs et " << nbCustomers << " clients." << std::endl;
+    while(inFile.good()) {
+        unsigned int id;
+        unsigned int openingPrice;
+        unsigned int connectionPrice;
 
-    // while(inFile.good()) {
-    //     inFile >> number;
-    //     std::cout << number << std::endl;
-    // }
+        inFile >> id;
+        inFile >> openingPrice;
+
+        Supplier s = Supplier(id, openingPrice);
+
+        for (int i = 0; i < nbCustomers; i++) {
+            inFile >> connectionPrice;
+
+            s.addConnectionPrice(connectionPrice);
+        }
+    }
+
+    std::cout << nbSupplier << " suppliers and " << nbCustomers << " clients." << std::endl;
 }
 
 void SupplierDeployment::writeFile()
-{ }
+{
+    for(Supplier s : this->openSuppliers)
+        std::cout << s.getId() << std::endl;
+}
 
 void SupplierDeployment::greedy()
 { }

@@ -1,27 +1,18 @@
 #ifndef SUPPLIER_DEPLOYMENT_HPP
 #define SUPPLIER_DEPLOYMENT_HPP
 
+#include "Supplier.hpp"
 #include <string>
+#include <vector>
 
 class SupplierDeployment {
-    // selectedAlgo
-    // suppliers
-    // openSuppliers
+    std::vector<Supplier> suppliers;
+    std::vector<Supplier> openSuppliers;
 
     public:
+
         SupplierDeployment();
         ~SupplierDeployment();
-
-        // setSelectedAlgo
-        // getSelectedAlgo
-
-        // addSupplier
-        // getSuppliers
-        // removeSupplier
-
-        // addOpenSupplier
-        // getOpenSuppliers
-        // removeOpenSupplier
 
         void readFile(std::string file);
         void writeFile();
