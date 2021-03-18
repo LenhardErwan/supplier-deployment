@@ -234,15 +234,17 @@ void SupplierDeployment::linear() {
 	}
 
 	glp_mpl_build_prob(tran, prob);
-	glp_simplex(prob, NULL);
-	glp_intopt(prob, NULL);
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.presolve = GLP_ON;
+	glp_intopt(prob, &parm);
 	ret = glp_mpl_postsolve(tran, prob, GLP_MIP);
 	if(ret != 0) {
 		std::cout << "Error on postsolving model" << std::endl;
 		goto skip;
 	}
 	
-	glp_print_sol(prob, "./test.txt");
+	glp_print_mip(prob, "./test.txt");
 
 	skip: glp_mpl_free_wksp(tran);
 				glp_delete_prob(prob);
