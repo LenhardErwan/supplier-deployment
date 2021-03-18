@@ -6,11 +6,12 @@
 #include <vector>
 
 class SupplierDeployment {
+	unsigned int nbSuppliers;
+	unsigned int nbClients;
 	std::vector<Supplier> suppliers;
 	std::vector<Supplier> openSuppliers;
 
 	public:
-
 		SupplierDeployment();
 		~SupplierDeployment();
 

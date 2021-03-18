@@ -19,12 +19,11 @@ void SupplierDeployment::readFile(std::string file) {
 	}
 
 	std::string number;
-	unsigned int nbSupplier;
-	unsigned int nbCustomers;
+
 	inFile >> number;
 	inFile >> number;
-	inFile >> nbSupplier;
-	inFile >> nbCustomers;
+	inFile >> this->nbSuppliers;
+	inFile >> this->nbClients;
 	inFile >> number;
 
 	while(inFile.good()) {
@@ -37,7 +36,7 @@ void SupplierDeployment::readFile(std::string file) {
 
 		Supplier s = Supplier(id, openingPrice);
 
-		for (int i = 0; i < nbCustomers; i++) {
+		for (int i = 0; i < this->nbClients; i++) {
 			inFile >> connectionPrice;
 
 			s.addConnectionPrice(connectionPrice);
@@ -46,7 +45,7 @@ void SupplierDeployment::readFile(std::string file) {
 		this->suppliers.push_back(s);
 	}
 
-	std::cout << nbSupplier << " suppliers and " << nbCustomers << " clients." << std::endl;
+	std::cout << this->nbSuppliers << " suppliers and " << this->nbClients << " clients." << std::endl;
 }
 
 void SupplierDeployment::writeFile() {

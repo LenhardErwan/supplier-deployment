@@ -8,12 +8,3 @@ Supplier::~Supplier() { }
 void Supplier::addConnectionPrice(int connectionPrice) {
 	this->connectionPrices.push_back(connectionPrice);
 }
-
-int Supplier::sumConnectionPrices() const {
-	int sum = 0;
-
-	for(int price : this->connectionPrices)
-		sum += price;
-
-	return sum;
-}

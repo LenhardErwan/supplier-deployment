@@ -23,14 +23,7 @@ class Supplier {
 		inline int getOpeningPrice() const { return this->openingPrice; }
 
 		void addConnectionPrice(int connectionPrice);
-		int sumConnectionPrices() const;
-
-		friend bool operator<(const Supplier& l, const Supplier& r) {
-			return (l.getOpeningPrice() + l.sumConnectionPrices()) < (r.getOpeningPrice() + r.sumConnectionPrices());
-		}
-		friend bool operator>(const Supplier& l, const Supplier& r) { return r < l; }
-		friend bool operator<=(const Supplier& l, const Supplier& r) { return !(l > r); }
-		friend bool operator>=(const Supplier& l, const Supplier& r) { return !(l < r); }
+		inline std::vector<int> getConnectionPrices() const { return this->connectionPrices; }
 };
 
 #endif
