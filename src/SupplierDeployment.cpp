@@ -248,7 +248,7 @@ void SupplierDeployment::linear() {
 
 	for (int i = 0; i < this->suppliers.size(); i++) {
 		if (glp_mip_col_val(prob, (glp_get_num_cols(prob) - i)) == 1) {
-			this->openSuppliers.push_back(this->suppliers.at((50 - 1) - i));
+			this->openSuppliers.push_back(this->suppliers.at((this->suppliers.size() - 1) - i));
 		}
 	}
 
