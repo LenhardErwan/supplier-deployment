@@ -42,6 +42,8 @@ void SupplierDeployment::readFile(std::string file) {
 
 			s.addConnectionPrice(connectionPrice);
 		}
+
+		this->suppliers.push_back(s);
 	}
 
 	std::cout << nbSupplier << " suppliers and " << nbCustomers << " clients." << std::endl;
