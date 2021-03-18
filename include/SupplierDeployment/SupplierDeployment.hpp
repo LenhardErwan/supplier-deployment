@@ -24,6 +24,8 @@ class SupplierDeployment {
 		void greedyLocalSearch();
 		void linear();
 		void linearRandom();
+
+		void probToDat(std::string file);
 };
 
 #endif

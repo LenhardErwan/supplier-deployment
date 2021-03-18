@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "glpk.h"
 
 SupplierDeployment::SupplierDeployment() { }
 
@@ -36,7 +37,7 @@ void SupplierDeployment::readFile(std::string file) {
 
 		Supplier s = Supplier(id, openingPrice);
 
-		for (int i = 0; i < this->nbClients; i++) {
+		for (unsigned i = 0; i < this->nbClients; i++) {
 			inFile >> connectionPrice;
 
 			s.addConnectionPrice(connectionPrice);
@@ -91,7 +92,7 @@ unsigned int SupplierDeployment::eval(std::vector<Supplier> openSuppliers) {
 	for (Supplier supplier : openSuppliers) {
 		total += supplier.getOpeningPrice();
 		
-		for (int i = 0; i < this->nbClients; i++) {
+		for (unsigned i = 0; i < this->nbClients; i++) {
 			int connectionPrice = supplier.getConnectionPrices().at(i);
 			int actualMinPrice = clientMinPrice.at(i);
 
@@ -209,6 +210,81 @@ void SupplierDeployment::greedyLocalSearch() {
 	}
 }
 
-void SupplierDeployment::linear() { }
+void SupplierDeployment::linear() {
+	this->probToDat("instance.dat");
+	// Create problem
+	glp_prob *prob = glp_create_prob();
+	glp_tran *tran = glp_mpl_alloc_wksp();
+	int ret = glp_mpl_read_model(tran, "./PLNE.mod", 1);
+	if(ret != 0) {
+		std::cout << "Error on translating model" << std::endl;
+		goto skip;
+	}
+
+	ret = glp_mpl_read_data(tran, "instance.dat");
+	if(ret != 0) {
+		std::cout << "Error on translating data" << std::endl;
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if(ret != 0) {
+		std::cout << "Error on generating model" << std::endl;
+		goto skip;
+	}
+
+	glp_mpl_build_prob(tran, prob);
+	
+	//TODO Here do solve
+
+	ret = glp_mpl_postsolve(tran, prob, GLP_SOL);
+	if(ret != 0) {
+		std::cout << "Error on postsolving model" << std::endl;
+		goto skip;
+	}
+	
+	glp_print_sol(prob, "./test.txt");
+
+	skip: glp_mpl_free_wksp(tran);
+				glp_delete_prob(prob);
+				return;
+}
 
 void SupplierDeployment::linearRandom() { }
+
+void SupplierDeployment::probToDat(std::string file) {
+	std::fstream outFile;
+
+    //opening the file and preventing errors
+	outFile.open(file, std::ios::out);
+	if (!outFile) {
+		std::cerr << "Error could not write: " << file << std::endl;
+		exit(1);
+	}
+
+	outFile << "data;" << std::endl;
+	outFile << "param n := " << this->nbSuppliers << ";" << std::endl;
+	outFile << "param m := " << this->nbClients << ";" << std::endl;
+	outFile << "param F := " << std::endl;
+	for (unsigned i = 0; i < this->nbSuppliers; i++) {
+		outFile << i+1 << " " << this->suppliers.at(i).getOpeningPrice() << std::endl;
+	}
+	outFile << ";" << "param C : ";
+	for (unsigned i = 0; i < this->nbClients; i++) {
+		outFile << i+1 << " ";
+	}
+	outFile << ":=" << std::endl;
+	for (unsigned i = 0; i < this->nbSuppliers; i++) {
+		outFile << i+1 << " ";
+		for (unsigned j = 0; j < this->nbClients; j++) {
+			outFile << this->suppliers.at(i).getConnectionPrices().at(j) << " ";
+		}
+		outFile << std::endl;
+	}
+	outFile  << ";" << "end;" << std::endl;
+
+	// closing the file
+	outFile.close();
+
+	std::cout << "Data file has been created at: " << file << std::endl;
+}

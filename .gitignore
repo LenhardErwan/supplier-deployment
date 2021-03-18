@@ -16,3 +16,5 @@ Makefile
 
 # Test output file
 output.txt
+PLNE.sol
+instance.dat
