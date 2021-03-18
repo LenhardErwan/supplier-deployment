@@ -136,7 +136,73 @@ void SupplierDeployment::greedy() {
 	}
 }
 
-void SupplierDeployment::greedyLocalSearch() { }
+void SupplierDeployment::greedyLocalSearch() {
+	greedy();
+
+	std::vector<Supplier> closeSuppliers;	// List of suppliers which are closed
+
+	/**
+	 * Fill the vector of closed suppliers by comparing the suppliers and
+	 * openSuppliers vector. Improves performance and reduces algorithm
+	 * complexity
+	 */
+	for (Supplier s : this->suppliers) {
+		bool isIn = false;
+		for (Supplier t : this->openSuppliers) {
+			if (s.getId() == t.getId()) {
+				isIn = true;
+				break;
+			}
+		}
+
+		if (!isIn) {
+			closeSuppliers.push_back(s);
+		}
+	}
+
+	// Is the solution improvable
+	bool improve = true;
+
+	// If suppliers is not empty and we improved the solution
+	while (!closeSuppliers.empty() && improve) {
+		int gap = 0;		// Gap between current openSuppliers cost and computed suppliers cost
+		int toOpenIndex;	// Index of the Supplier we must open from closeSuppliers
+		int toCloseIndex;	// Index of the Supplier we must close from openSuppliers
+
+		// Loop on openSuppliers
+		for (int i = 0; i < openSuppliers.size(); i++) {
+			// Remove the current open supplier from the list
+			std::vector<Supplier> copy = this->openSuppliers;
+			copy.erase(copy.begin() + i);
+
+			// Loop on closeSuppliers
+			for (int j = 0; i < closeSuppliers.size(); i++) {
+				// Add the current close supplier in the list
+				copy.push_back(closeSuppliers.at(j));
+				int price = eval(this->openSuppliers) - eval(copy);	// Compute the gap between the new list and the old list
+
+				// If the new gap is greater than the old gap
+				if (price > gap) {
+					gap = price;
+					toOpenIndex = j;
+					toCloseIndex = i;
+				}
+
+				// Remove the current close supplier for the next iteration
+				copy.pop_back();
+			}
+		}
+
+		// If we improved the solution
+		if (gap > 0) {
+			this->openSuppliers.erase(this->openSuppliers.begin() + toCloseIndex);
+			this->openSuppliers.push_back(closeSuppliers.at(toOpenIndex));
+			closeSuppliers.erase(closeSuppliers.begin() + toOpenIndex);
+		} else {
+			improve = false;
+		}
+	}
+}
 
 void SupplierDeployment::linear() { }
 
